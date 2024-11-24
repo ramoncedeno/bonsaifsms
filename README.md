@@ -6,6 +6,17 @@ Requeriments
 - node v20.11.0
 - npm 10.2.4
 
+Complements
+- Laravel telescope
+- laravel breeze/livewire
+- Laravel auditing
+- laravel excel
+    - import
+    - queue
+    - chunk
+    - stard row
+
+
 ***
 ```mermaid
 flowchart TD
