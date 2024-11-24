@@ -13,10 +13,11 @@ Complements
 - Laravel auditing: https://laravel-auditing.com/
 - Laravel Api routes: https://laravel.com/docs/11.x/routing
 - laravel excel
-    - import
-    - queue
-    - chunk
-    - stard row
+    - Import
+    - WithHeadingRow
+    - WithChunkReading
+    - WithBatchInserts
+    - ShouldQueue
 
 
 ***
