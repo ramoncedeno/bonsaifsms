@@ -6,10 +6,12 @@ Requeriments
 - node v20.11.0
 - npm 10.2.4
 
+***
 Complements
-- Laravel telescope
-- laravel breeze/livewire
-- Laravel auditing
+- Laravel telescope: https://laravel.com/docs/11.x/telescope
+- laravel breeze/livewire: https://laravel.com/docs/11.x/starter-kits
+- Laravel auditing: https://laravel-auditing.com/
+- Laravel Api routes: https://laravel.com/docs/11.x/routing
 - laravel excel
     - import
     - queue
@@ -18,6 +20,7 @@ Complements
 
 
 ***
+Sms Transaction Controller Data Flow
 ```mermaid
 flowchart TD
     A["User"] -->|Sends GET request| B["Endpoint /send-sms/{phone}/{message}"]
@@ -32,3 +35,5 @@ flowchart TD
     J --> K["Return response to user"]
     F --> K["Return validation error"]
     K --> A["User"]
+```
+***
