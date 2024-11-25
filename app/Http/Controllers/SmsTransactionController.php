@@ -7,8 +7,10 @@ use App\Models\sms_transaction;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
+
 class SmsTransactionController extends Controller
 {
+
     /**
      * Send SMS confirmation.
      *
@@ -18,6 +20,7 @@ class SmsTransactionController extends Controller
      */
     public function sendSMS($phone, $message)
     {
+
         // Validate the phone number and message
         $validator = Validator::make(
 
@@ -91,4 +94,13 @@ class SmsTransactionController extends Controller
         $message = Str::ascii($message);
         return $message;
     }
+
+    // code for the operation of the sms.send form
+    public function showForm()
+    {
+        return view('send_sms');
+    }
+
+
 }
+
