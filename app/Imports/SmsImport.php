@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Http\Controllers\SmsTransactionController;
+use App\Models\SendAttemptTest;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -33,20 +34,47 @@ class SmsImport implements OnEachRow, WithHeadingRow
      */
     public function onRow(Row $row)
     {
-        $row = $row->toArray();
 
         // Assuming the columns are: 'phone' => phone, 'message' => message
         $phone = $row['phone'];
         $message = $row['message'];
 
-        //ToDo antes de hacer el envío debo almacenar los datos en la base de transacciones  y recuperar los registros que no fueron enviados. para luego intentar el envío
+         // Create a temporary record first
+         $sendAttempt = SendAttemptTest::create([
+            'phone' => $phone,
+            'message' => $message,
+            'status' => 'pending',
+        ]);
+
+        // recover id SendAttemptTest
+        $sendAttempt_id = $sendAttempt->id;
 
         try {
+
+
             // Call the method to send SMS
-            $this->smsController->sendSMS($phone, $message);
+            $response = $this->smsController->sendSMS($phone, $message);
+
+            $id_send_message = $response->getData()->response->result[0]->id;
+
+                        // Log the response for debugging purposes
+            Log::info('SMS Response: ', ['response' => $response]);
+            Log::info('SMS id_send_message: ', ['response' => $id_send_message]);
+
+            SendAttemptTest::where('id', $sendAttempt_id)->update([
+
+                'status' => 'sent',
+                'response_id'=>$id_send_message,
+                'aditional_data' => $response,  // el campo esta mal escrito
+            ]);
+
+
+
         } catch (\Exception $e) {
             // Log any error that occurs during SMS sending
-            Log::error("Error sending SMS to {$phone}: " . $e->getMessage());
+            Log::error("Error sending SMS to {$phone}: " . $e);
+
+
         }
     }
 
