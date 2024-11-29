@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('send_attempts_test', function (Blueprint $table) {
             $table->id();
+            $table->string('subject');
+            $table->string('sponsor');
             $table->string('phone');
             $table->text('message');
             $table->string('status')->default('pending');
             $table->string('response_id')->nullable();
-            $table->text('aditional_data')->nullable(); // el campo esta mal escrito
+            $table->text('aditional_data')->nullable();
             $table->timestamps();
 
         });

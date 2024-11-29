@@ -36,14 +36,21 @@ class SmsImport implements OnEachRow, WithHeadingRow
     {
 
         // Assuming the columns are: 'phone' => phone, 'message' => message
-        $phone = $row['phone'];
-        $message = $row['message'];
+
+            $subject = $row['subject'];
+            $sponsor = $row['sponsor'];
+            $phone = $row['phone'];
+            $message = $row['message'];
 
          // Create a temporary record first
          $sendAttempt = SendAttemptTest::create([
-            'phone' => $phone,
-            'message' => $message,
-            'status' => 'pending',
+
+             'subject' => $subject,
+             'sponsor' => $sponsor,
+             'phone' => $phone,
+             'message' => $message,
+             'status' => 'pending',
+
         ]);
 
         // recover id SendAttemptTest
