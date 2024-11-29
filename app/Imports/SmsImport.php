@@ -2,18 +2,23 @@
 
 namespace App\Imports;
 
-use App\Http\Controllers\SmsTransactionController;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\OnEachRow;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Row;
+use App\Models\SendAttempt;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Row;
+use App\Http\Controllers\SmsTransactionController;
 
-class SmsImport implements OnEachRow, WithHeadingRow
-,WithChunkReading,WithBatchInserts,ShouldQueue
-
+class SmsImport implements
+    OnEachRow,
+    WithHeadingRow
+    ,
+    WithChunkReading,
+    WithBatchInserts,
+    ShouldQueue
 {
     protected $smsController;
 
@@ -39,14 +44,32 @@ class SmsImport implements OnEachRow, WithHeadingRow
         $phone = $row['phone'];
         $message = $row['message'];
 
-        //ToDo antes de hacer el envío debo almacenar los datos en la base de transacciones  y recuperar los registros que no fueron enviados. para luego intentar el envío
+        // Save rest in DB with pending status
+        $attempt = SendAttempt::create([
+            'phone' => $phone,
+            'message' => $message,
+            'status' => 'pending',
+        ]);
+
 
         try {
             // Call the method to send SMS
-            $this->smsController->sendSMS($phone, $message);
+            $response = $this->smsController->sendSMS($phone, $message);
+            $id_from_send_attempt = $response->getData()->response->result[0]->id;
+
+            SendAttempt::updateOrCreate(
+                [
+                    'id' => $attempt->id,
+                ],
+                [
+                    'status' => 'sent',
+                    'response_id' => $id_from_send_attempt ? : 'Error al tratar de ubicar el ID',
+                    'additional_data' => $response,
+                ]
+            );
         } catch (\Exception $e) {
             // Log any error that occurs during SMS sending
-            Log::error("Error sending SMS to {$phone}: " . $e->getMessage());
+            Log::error($e);
         }
     }
 

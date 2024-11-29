@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\SmsImport;
+use App\Models\SendAttempt;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\SmsImport;
 
 class SmsImportController extends Controller
 {
@@ -15,7 +16,8 @@ class SmsImportController extends Controller
      */
     public function showImportForm()
     {
-        return view('import_sms');
+        $data = SendAttempt::paginate(10);
+        return view('import_sms', ['data' => $data]);
     }
 
     /**
