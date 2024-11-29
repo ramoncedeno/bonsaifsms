@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('send_attempts_test', function (Blueprint $table) {
+        Schema::create('send_attempts', function (Blueprint $table) {
             $table->id();
             $table->string('subject');
             $table->string('sponsor');
+            $table->string('identification_id')->nullable();
             $table->string('phone');
             $table->text('message');
             $table->string('status')->default('pending');
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('send_attempts_test');
+        Schema::dropIfExists('send_attempts');
     }
 };

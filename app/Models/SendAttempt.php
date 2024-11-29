@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SendAttemptTest extends Model
+class SendAttempt extends Model
 {
-    protected $table = 'send_attempts_test';
+    protected $table = 'send_attempts';
 
     protected $fillable = [
 
         'subject',
         'sponsor',
+        'identification_id',
         'phone',
         'message',
         'status',

@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Http\Controllers\SmsTransactionController;
-use App\Models\SendAttemptTest;
+use App\Models\SendAttempt;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -34,26 +34,27 @@ class SmsImport implements OnEachRow, WithHeadingRow
      */
     public function onRow(Row $row)
     {
-
-        // Assuming the columns are: 'phone' => phone, 'message' => message
+         // Fields loaded in the file
 
             $subject = $row['subject'];
             $sponsor = $row['sponsor'];
+            $identification_id =$row['identification_id'];
             $phone = $row['phone'];
             $message = $row['message'];
 
          // Create a temporary record first
-         $sendAttempt = SendAttemptTest::create([
+         $sendAttempt = SendAttempt::create([
 
              'subject' => $subject,
              'sponsor' => $sponsor,
+             'identification_id'=>$identification_id,
              'phone' => $phone,
              'message' => $message,
              'status' => 'pending',
 
         ]);
 
-        // recover id SendAttemptTest
+        // recover id SendAttempt
         $sendAttempt_id = $sendAttempt->id;
 
         try {
@@ -61,18 +62,19 @@ class SmsImport implements OnEachRow, WithHeadingRow
 
             // Call the method to send SMS
             $response = $this->smsController->sendSMS($phone, $message);
-
+            //get response from sms controller
             $id_send_message = $response->getData()->response->result[0]->id;
 
-                        // Log the response for debugging purposes
+            // Log the response for debugging purposes
             Log::info('SMS Response: ', ['response' => $response]);
             Log::info('SMS id_send_message: ', ['response' => $id_send_message]);
 
-            SendAttemptTest::where('id', $sendAttempt_id)->update([
+            // updates the fields  SendAttempt
+            SendAttempt::where('id', $sendAttempt_id)->update([
 
                 'status' => 'sent',
                 'response_id'=>$id_send_message,
-                'aditional_data' => $response,  // el campo esta mal escrito
+                'aditional_data' => $response,
             ]);
 
 
