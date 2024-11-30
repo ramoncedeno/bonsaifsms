@@ -63,23 +63,38 @@ class SmsImport implements OnEachRow, WithHeadingRow
             // Call the method to send SMS
             $response = $this->smsController->sendSMS($phone, $message);
             //get response from sms controller
-            $id_send_message = $response->getData()->response->result[0]->id;
 
-            // Log the response for debugging purposes
-            Log::info('SMS Response: ', ['response' => $response]);
-            Log::info('SMS id_send_message: ', ['response' => $id_send_message]);
+        if (isset( $response->getData()->response->result[0]->id)){
+
+            $id_send_message = $response->getData()->response->result[0]->id;
 
             // updates the fields  SendAttempt
             SendAttempt::where('id', $sendAttempt_id)->update([
 
                 'status' => 'sent',
                 'response_id'=>$id_send_message,
-                'aditional_data' => $response,
+                'aditional_data' => json_encode($response),
             ]);
 
+        } else {
 
+            SendAttempt::where('id', $sendAttempt_id)->update([
+                'status' => 'processed',
+                'aditional_data' => json_encode($response),
+            ]);
+        }
 
         } catch (\Exception $e) {
+
+                    // Manejar cualquier excepción
+                SendAttempt::where('id', $sendAttempt_id)->update([
+                    'status' => 'error',
+                    'aditional_data' => json_encode([
+                        'error_message' => $e->getMessage(),
+                        'original_response' => $response ?? null
+                    ]),
+                ]);
+
             // Log any error that occurs during SMS sending
             Log::error("Error sending SMS to {$phone}: " . $e);
 
