@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -18,9 +19,9 @@ Route::get('/import-users', [UserController::class, 'viewimportform'])->name('im
 Route::post('/import-users', [UserController::class, 'requestimportform'])->name('import.users'); //Import file from form
 
 
-Route::get('/send-sms', [SmsTransactionController::class, 'showForm'])->name('sms.show');
+
 Route::get('/send-sms/{phone}/{message}', [SmsTransactionController::class, 'sendSMS'])->name('sms.send');
 Route::post('/send-sms/{phone}/{message}', [SmsTransactionController::class, 'sendSMS'])->name('sms.send');
 
-Route::get('/import-sms', [SmsImportController::class, 'showImportForm'])->name('sms.import.form');
+
 Route::post('/import-sms', [SmsImportController::class, 'import'])->name('sms.import');

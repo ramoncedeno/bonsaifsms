@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\SmsImport;
+use App\Models\SendAttempt;
 
 class SmsImportController extends Controller
 {
@@ -39,4 +40,5 @@ class SmsImportController extends Controller
             return redirect()->back()->withErrors('Error processing file: ' . $e->getMessage());
         }
     }
+
 }
