@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SmsImportController;
 use App\Http\Controllers\SmsTransactionController;
+use App\Http\Controllers\SendAttemptController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -21,4 +22,7 @@ Route::get('/send-sms', [SmsTransactionController::class, 'showForm'])->name('sm
 ->middleware(['auth', 'verified']);
 
 Route::get('/import-sms', [SmsImportController::class, 'showImportForm'])->name('sms.import.form')
+->middleware(['auth', 'verified']);
+
+Route::get('/view-smssending',[SendAttemptController::class,'index'])->name('send_attempts.index')
 ->middleware(['auth', 'verified']);

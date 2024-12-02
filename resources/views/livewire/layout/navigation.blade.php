@@ -36,11 +36,15 @@ new class extends Component
                     </x-nav-link>
 
                     <x-nav-link :href="route('sms.import.form')" :active="request()->routeIs('sms.import.form')" wire:navigate>
-                        {{ __('Mass mailing') }}
+                        {{ __('Mass SMS sending') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('sms.show')" :active="request()->routeIs('sms.show')" wire:navigate>
-                        {{ __('Individual shipping') }}
+                        {{ __('Individual SMS sending') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('send_attempts.index')" :active="request()->routeIs('send_attempts.index')" wire:navigate>
+                        {{ __('View SMS sending') }}
                     </x-nav-link>
 
 
