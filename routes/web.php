@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SmsImportController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -14,3 +15,4 @@ Route::view('profile', 'profile')
 
 require __DIR__.'/auth.php';
 
+Route::get('/sms/view',[SmsImportController::class,'index_smsview'])->name('sms.reg.view');
