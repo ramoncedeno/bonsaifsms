@@ -18,7 +18,7 @@ class SendAttempt extends Model
         'status',
         'response_id',
         'aditional_data',
-
+        'created_at'
     ];
 
 }
