@@ -28,7 +28,7 @@ A web application for managing and sending SMS messages, including features for 
     - Features used: Import, WithHeadingRow, WithChunkReading, WithBatchInserts, ShouldQueue.
 - **Laravel Sanctum**: API authentication.
 - **Spatie/Laravel-Permission**: Role and permission management.
-- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **Laravel Resend**: Send email using Laravel. 
   
 ## Installation Guide
 
