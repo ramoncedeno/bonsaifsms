@@ -35,7 +35,7 @@ class SmsAttemptView extends Component
             $this->message = 'Importación de SMS completada con éxito.';
             $this->file = null;
             $this->resetPage(); // Reset pagination to show new data
-            $this->dispatch('$refresh'); // <--- AÑADIDO: Forzar la re-renderización del componente
+            $this->dispatch('smsImported'); // <--- AÑADIDO: Forzar la re-renderización del componente
         } catch (\Exception $e) {
             Log::error('Error durante la importación de SMS: ' . $e->getMessage());
             $this->message = 'Error durante la importación de SMS: ' . $e->getMessage();

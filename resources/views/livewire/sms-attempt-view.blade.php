@@ -28,7 +28,7 @@
                     <!-- Campo de Búsqueda -->
                     <div class="mb-4">
                         <div class="flex flex-col md:flex-row items-center">
-                            <input type="text" wire:model.live="search" placeholder="Buscar..." class="w-full md:w-auto p-2 border border-gray-300 rounded">
+                            <input type="text" wire:model.live="search" placeholder="Buscar..." class="w-full md:w-auto p-2 border border-gray-300 rounded text-gray-900 dark:text-gray-800">
                         </div>
                     </div>
 

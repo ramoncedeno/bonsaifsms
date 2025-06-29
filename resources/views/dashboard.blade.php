@@ -11,6 +11,9 @@
                 <div class="text-gray-900 dark:text-gray-100 mb-6">
                     {{ __("You're logged in!") }}
                 </div>
+
+                {{-- SMS Summary Component --}}
+                <livewire:sms-summary />
             </div>
         </div>
     </div>
