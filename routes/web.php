@@ -20,5 +20,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'permission:import sms'])->group(function () {
-    Route::get('/sms/view',[SmsImportController::class,'index_smsview'])->name('sms.reg.view');
+    Route::get('/sms/view', App\Livewire\SmsAttemptView::class)->name('sms.reg.view');
+    // The import route is now handled by Livewire, so it's commented out or removed.
 });

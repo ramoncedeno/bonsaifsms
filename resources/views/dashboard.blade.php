@@ -11,6 +11,7 @@
                 <div class="text-gray-900 dark:text-gray-100 mb-6">
                     {{ __("You're logged in!") }}
                 </div>
-
-
+            </div>
+        </div>
+    </div>
 </x-app-layout>
