@@ -2,7 +2,7 @@ Requeriments
 
 - Laravel v11.3.3
 - Composer version 2.8.2 2024-10-29 16:12:11
-- PHP version 8.2.12 (C:\xampp\php\php.exe)
+- PHP version 8.2.12 (Laravel herd)
 - node v20.11.0
 - npm 10.2.4
 
