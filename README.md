@@ -29,8 +29,7 @@ A web application for managing and sending SMS messages, including features for 
 - **Laravel Sanctum**: API authentication.
 - **Spatie/Laravel-Permission**: Role and permission management.
 - **Tailwind CSS**: Utility-first CSS framework for styling.
-- **Mermaid**: For generating diagrams in Markdown.
-
+  
 ## Installation Guide
 
 Follow these steps to set up the project locally:
