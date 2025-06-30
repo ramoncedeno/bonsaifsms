@@ -55,18 +55,18 @@
                             <tbody>
                                 @foreach ($sendAttempts as $sendAttempt)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="py-2 px-4 border-b text-gray-600 dark:text-gray-400">{{ $sendAttempt->subject }}</td>
-                                        <td class="py-2 px-4 border-b text-gray-600 dark:text-gray-400">{{ $sendAttempt->sponsor }}</td>
-                                        <td class="py-2 px-4 border-b text-gray-600 dark:text-gray-400">{{ $sendAttempt->identification_id }}</td>
-                                        <td class="py-2 px-4 border-b text-gray-600 dark:text-gray-400">{{ $sendAttempt->phone }}</td>
-                                        <td class="py-2 px-4 border-b text-gray-600 dark:text-gray-400">{{ $sendAttempt->message }}</td>
+                                        <td class="py-2 px-4 border-b text-gray-800 dark:text-gray-900">{{ $sendAttempt->subject }}</td>
+                                        <td class="py-2 px-4 border-b text-gray-800 dark:text-gray-900">{{ $sendAttempt->sponsor }}</td>
+                                        <td class="py-2 px-4 border-b text-gray-800 dark:text-gray-900">{{ $sendAttempt->identification_id }}</td>
+                                        <td class="py-2 px-4 border-b text-gray-800 dark:text-gray-900">{{ $sendAttempt->phone }}</td>
+                                        <td class="py-2 px-4 border-b text-gray-800 dark:text-gray-900">{{ $sendAttempt->message }}</td>
                                         <td class="py-2 px-4 border-b">
                                             <span class="px-2 py-1 rounded {{ $sendAttempt->status == 'success' ? 'bg-green-500 text-white' : 'bg-blue-500 text-white' }}">
                                                 {{ ucfirst($sendAttempt->status) }}
                                             </span>
                                         </td>
-                                        <td class="py-2 px-4 border-b text-gray-600 dark:text-gray-400">{{ $sendAttempt->response_id }}</td>
-                                        <td class="py-2 px-4 border-b text-gray-600 dark:text-gray-400">{{ $sendAttempt->created_at->format('d/m/Y H:i') }}</td>
+                                        <td class="py-2 px-4 border-b text-gray-800 dark:text-gray-900">{{ $sendAttempt->response_id }}</td>
+                                        <td class="py-2 px-4 border-b text-gray-800 dark:text-gray-900">{{ $sendAttempt->created_at->format('d/m/Y H:i') }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
