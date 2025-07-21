@@ -24,7 +24,21 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
         'name',
         'email',
         'password',
+        'status',
     ];
+
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_SUSPENDED = 'suspended';
+
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->status === self::STATUS_SUSPENDED;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

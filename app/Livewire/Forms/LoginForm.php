@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use App\Models\User;
 
 class LoginForm extends Form
 {
@@ -35,6 +36,15 @@ class LoginForm extends Form
 
             throw ValidationException::withMessages([
                 'form.email' => trans('auth.failed'),
+            ]);
+        }
+
+        $user = Auth::user();
+
+        if ($user && $user->isSuspended()) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'form.email' => 'Your account has been suspended. Please contact the administrator.',
             ]);
         }
 

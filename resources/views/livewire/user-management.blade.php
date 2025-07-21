@@ -34,6 +34,9 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     {{ __('Roles') }}
                                 </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    {{ __('Status') }}
+                                </th>
                                 <th scope="col" colspan="4" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     {{ __('Actions') }}
                                 </th>
@@ -65,6 +68,18 @@
                                                 {{ $role->name }}
                                             </span>
                                         @endforeach
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->status === App\Models\User::STATUS_ACTIVE ? 'bg-green-200 text-green-800 dark:bg-green-600 dark:text-white' : 'bg-red-200 text-red-800 dark:bg-red-600 dark:text-white' }}">
+                                            {{ ucfirst($user->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        @if($user->status === App\Models\User::STATUS_SUSPENDED)
+                                            <button wire:click="activateUser({{ $user->id }})" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Activate</button>
+                                        @else
+                                            <button wire:click="suspendUser({{ $user->id }})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Suspend</button>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button wire:click="edit({{ $user->id }})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">Edit</button>

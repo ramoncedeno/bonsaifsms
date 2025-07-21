@@ -64,6 +64,10 @@ class UserManagement extends Component
             'password' => bcrypt($this->password),
         ]);
 
+        if (!$this->user_id) { // Only send verification email for newly created users
+            $user->sendEmailVerificationNotification();
+        }
+
         $user->syncRoles($this->selectedRoles);
 
         session()->flash('message', 
@@ -106,5 +110,27 @@ class UserManagement extends Component
         $user = User::findOrFail($userId);
         app('auth.password.broker')->sendResetLink($user->only('email'));
         session()->flash('message', 'Password reset link sent successfully.');
+    }
+
+    public function activateUser($userId)
+    {
+        $user = User::findOrFail($userId);
+        $user->status = User::STATUS_ACTIVE;
+        $user->save();
+        session()->flash('message', 'User activated successfully.');
+    }
+
+    public function suspendUser($userId)
+    {
+        $user = User::findOrFail($userId);
+
+        if ($user->hasRole('admin')) {
+            session()->flash('message', 'Cannot suspend an administrator.');
+            return;
+        }
+
+        $user->status = User::STATUS_SUSPENDED;
+        $user->save();
+        session()->flash('message', 'User suspended successfully.');
     }
 }
