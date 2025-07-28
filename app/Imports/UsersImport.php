@@ -27,7 +27,7 @@ class UsersImport implements ToModel,WithHeadingRow,WithChunkReading,WithBatchIn
                 ],
                 [
                     'name' => $row['name'],
-                    'password' => Hash::make($row['password']),
+                    'password' => (isset($row['password']) && !empty($row['password'])) ? Hash::make($row['password']) : Hash::make('password'), // Default password if not provided
                 ]
             );
         } catch (\Exception $e) {

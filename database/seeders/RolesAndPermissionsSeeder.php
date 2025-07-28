@@ -28,8 +28,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminRole = Role::firstOrCreate(["name" => "admin"]);
         $adminRole->givePermissionTo(Permission::all());
 
-        $userRole = Role::firstOrCreate(["name" => "user"]);
-        $userRole->givePermissionTo(["view dashboard", "view profile"]);
+        
 
         // Create supervisor role and assign all permissions except 'manage users'
         $supervisorRole = Role::firstOrCreate(["name" => "supervisor"]);

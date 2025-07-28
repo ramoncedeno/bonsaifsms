@@ -1,6 +1,6 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg min-h-[600px]">
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-4">
                     {{ __('User Management') }}
@@ -37,7 +37,7 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     {{ __('Status') }}
                                 </th>
-                                <th scope="col" colspan="4" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     {{ __('Actions') }}
                                 </th>
                             </tr>
@@ -45,55 +45,72 @@
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                             @foreach ($users as $user)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4">
                                         <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $user->name }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4">
                                         <div class="text-sm text-gray-500 dark:text-gray-300">{{ $user->email }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4">
                                         @if($user->email_verified_at)
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-200 text-green-800 dark:bg-green-600 dark:text-white">
                                                 Verified
                                             </span>
                                         @else
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-200 text-red-800 dark:bg-red-600 dark:text-white">
-                                                Not Verified
-                                            </span>
+                                            <button wire:click="sendVerificationEmail({{ $user->id }})" wire:loading.attr="disabled" wire:target="sendVerificationEmail({{ $user->id }})" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-200 text-red-800 dark:bg-red-600 dark:text-white cursor-pointer">
+                                                <span wire:loading.remove wire:target="sendVerificationEmail({{ $user->id }})">Send Verification</span>
+                                                <span wire:loading wire:target="sendVerificationEmail({{ $user->id }})">Processing...</span>
+                                            </button>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4">
                                         @foreach ($user->roles as $role)
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100">
                                                 {{ $role->name }}
                                             </span>
                                         @endforeach
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->status === App\Models\User::STATUS_ACTIVE ? 'bg-green-200 text-green-800 dark:bg-green-600 dark:text-white' : 'bg-red-200 text-red-800 dark:bg-red-600 dark:text-white' }}">
                                             {{ ucfirst($user->status) }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        @if($user->status === App\Models\User::STATUS_SUSPENDED)
-                                            <button wire:click="activateUser({{ $user->id }})" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Activate</button>
-                                        @else
-                                            <button wire:click="suspendUser({{ $user->id }})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Suspend</button>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button wire:click="edit({{ $user->id }})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">Edit</button>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button wire:click="delete({{ $user->id }})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        @if(!$user->hasVerifiedEmail())
-                                            <button wire:click="sendVerificationEmail({{ $user->id }})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send Verification</button>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button wire:click="sendPasswordReset({{ $user->id }})" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Send Reset Password</button>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                        <x-dropdown align="right" width="48">
+                                            <x-slot name="trigger">
+                                                <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v.01M12 12v.01M12 18v.01"></path>
+                                                    </svg>
+                                                </button>
+                                            </x-slot>
+
+                                            <x-slot name="content">
+                                                @if($user->status === App\Models\User::STATUS_SUSPENDED)
+                                                    <x-dropdown-link wire:click="activateUser({{ $user->id }})" class="cursor-pointer">
+                                                        {{ __('Activate') }}
+                                                    </x-dropdown-link>
+                                                @else
+                                                    <x-dropdown-link wire:click="suspendUser({{ $user->id }})" class="cursor-pointer">
+                                                        {{ __('Suspend') }}
+                                                    </x-dropdown-link>
+                                                @endif
+                                                <x-dropdown-link wire:click="edit({{ $user->id }})" class="cursor-pointer">
+                                                    {{ __('Edit') }}
+                                                </x-dropdown-link>
+                                                <x-dropdown-link wire:click="delete({{ $user->id }})" class="cursor-pointer">
+                                                    {{ __('Delete') }}
+                                                </x-dropdown-link>
+                                                @if(!$user->hasVerifiedEmail())
+                                                    <x-dropdown-link wire:click="sendVerificationEmail({{ $user->id }})" class="cursor-pointer">
+                                                        {{ __('Send Verification') }}
+                                                    </x-dropdown-link>
+                                                @endif
+                                                <x-dropdown-link wire:click="sendPasswordReset({{ $user->id }})" class="cursor-pointer">
+                                                    {{ __('Send Reset Password') }}
+                                                </x-dropdown-link>
+                                            </x-slot>
+                                        </x-dropdown>
                                     </td>
                                 </tr>
                             @endforeach

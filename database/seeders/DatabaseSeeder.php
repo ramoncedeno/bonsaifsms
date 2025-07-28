@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::firstOrCreate(
-            ['email' => 'r.cedeno@uinenlinea.mx'],
+            ['email' => 'rcedeno@igroupsolution.com'],
             ['name' => 'Ramón Cedeño',
-             'password'=>'Rc465798'
+             'password'=>'Secretpassword'
             ]
         );
 

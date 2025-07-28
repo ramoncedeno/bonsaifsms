@@ -18,7 +18,10 @@
                     <form wire:submit.prevent="importSms" class="mb-4 bg-white p-6 rounded-lg shadow-md">
                         <div class="flex flex-col md:flex-row items-center">
                             <input type="file" wire:model="file" required class="block w-full md:w-auto text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                            <button type="submit" class="mt-2 md:mt-0 md:ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Importar</button>
+                            <button type="submit" wire:loading.attr="disabled" wire:target="importSms" class="mt-2 md:mt-0 md:ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+                                <span wire:loading.remove wire:target="importSms">Importar</span>
+                                <span wire:loading wire:target="importSms">Procesando...</span>
+                            </button>
                         </div>
                         @error('file') <span class="text-red-500 text-xs mt-2">{{ $message }}</span> @enderror
                     </form>
