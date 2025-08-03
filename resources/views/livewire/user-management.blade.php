@@ -18,7 +18,7 @@
                     @include('livewire.create-user')
                 @endif
 
-                <div class="overflow-x-auto">
+                <div>
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
@@ -57,10 +57,9 @@
                                                 Verified
                                             </span>
                                         @else
-                                            <button wire:click="sendVerificationEmail({{ $user->id }})" wire:loading.attr="disabled" wire:target="sendVerificationEmail({{ $user->id }})" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-200 text-red-800 dark:bg-red-600 dark:text-white cursor-pointer">
-                                                <span wire:loading.remove wire:target="sendVerificationEmail({{ $user->id }})">Send Verification</span>
-                                                <span wire:loading wire:target="sendVerificationEmail({{ $user->id }})">Processing...</span>
-                                            </button>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-200 text-red-800 dark:bg-red-600 dark:text-white">
+                                                Not Verified
+                                            </span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
@@ -86,21 +85,23 @@
                                             </x-slot>
 
                                             <x-slot name="content">
-                                                @if($user->status === App\Models\User::STATUS_SUSPENDED)
-                                                    <x-dropdown-link wire:click="activateUser({{ $user->id }})" class="cursor-pointer">
-                                                        {{ __('Activate') }}
+                                                @if($user->id !== 1)
+                                                    @if($user->status === App\Models\User::STATUS_SUSPENDED)
+                                                        <x-dropdown-link wire:click="activateUser({{ $user->id }})" class="cursor-pointer">
+                                                            {{ __('Activate') }}
+                                                        </x-dropdown-link>
+                                                    @else
+                                                        <x-dropdown-link wire:click="suspendUser({{ $user->id }})" class="cursor-pointer">
+                                                            {{ __('Suspend') }}
+                                                        </x-dropdown-link>
+                                                    @endif
+                                                    <x-dropdown-link wire:click="edit({{ $user->id }})" class="cursor-pointer">
+                                                        {{ __('Edit') }}
                                                     </x-dropdown-link>
-                                                @else
-                                                    <x-dropdown-link wire:click="suspendUser({{ $user->id }})" class="cursor-pointer">
-                                                        {{ __('Suspend') }}
+                                                    <x-dropdown-link wire:click="delete({{ $user->id }})" class="cursor-pointer">
+                                                        {{ __('Delete') }}
                                                     </x-dropdown-link>
                                                 @endif
-                                                <x-dropdown-link wire:click="edit({{ $user->id }})" class="cursor-pointer">
-                                                    {{ __('Edit') }}
-                                                </x-dropdown-link>
-                                                <x-dropdown-link wire:click="delete({{ $user->id }})" class="cursor-pointer">
-                                                    {{ __('Delete') }}
-                                                </x-dropdown-link>
                                                 @if(!$user->hasVerifiedEmail())
                                                     <x-dropdown-link wire:click="sendVerificationEmail({{ $user->id }})" class="cursor-pointer">
                                                         {{ __('Send Verification') }}

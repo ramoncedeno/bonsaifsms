@@ -31,8 +31,8 @@ new #[Layout('layouts.guest')] class extends Component
 
         event(new Registered($user = User::create($validated)));
 
-        // Assign role with ID 2 to the new user
-        $user->assignRole(2);
+        // // Assign role with ID 2 to the new user
+        // $user->assignRole(2);
 
         Auth::login($user);
 

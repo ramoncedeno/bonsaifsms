@@ -56,6 +56,13 @@ class UserManagement extends Component
 
     public function store()
     {
+        if ($this->user_id == 1) {
+            session()->flash('message', 'The primary user cannot be edited.');
+            $this->closeModal();
+            $this->resetInputFields();
+            return;
+        }
+
         $this->isSaving = true;
 
         $this->validate([
@@ -98,6 +105,11 @@ class UserManagement extends Component
 
     public function edit($id)
     {
+        if ($id == 1) {
+            session()->flash('message', 'The primary user cannot be edited.');
+            return;
+        }
+
         $user = User::findOrFail($id);
         $this->user_id = $id;
         $this->name = $user->name;
