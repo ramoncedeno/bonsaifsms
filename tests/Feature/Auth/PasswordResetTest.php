@@ -133,7 +133,6 @@ test('password can be reset with valid token', function () {
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
         ); throw $e; //allows Phpunit To Mark The TestAs Failed
-
     }
 
 

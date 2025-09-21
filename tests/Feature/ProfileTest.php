@@ -1,89 +1,151 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Livewire\Volt\Volt;
 
 test('profile page is displayed', function () {
-    $user = User::factory()->create();
 
-    $this->actingAs($user);
+    try{
+        $user = User::factory()->create();
 
-    $response = $this->get('/profile');
+        $this->actingAs($user);
 
-    $response
-        ->assertOk()
-        ->assertSeeVolt('profile.update-profile-information-form')
-        ->assertSeeVolt('profile.update-password-form')
-        ->assertSeeVolt('profile.delete-user-form');
+        $response = $this->get('/profile');
+
+        $response
+            ->assertOk()
+            ->assertSeeVolt('profile.update-profile-information-form')
+            ->assertSeeVolt('profile.update-password-form')
+            ->assertSeeVolt('profile.delete-user-form');
+
+        Log::channel('test_result')->info('Test passed: profile page is displayed');
+
+
+    }catch(\Throwable $e) {
+        Log::channel('test_result')->error(
+            'Test failed: ' . $e->getMessage(),
+            ['exception' => $e] // <- This makes the stacktrace register
+        ); throw $e; //allows Phpunit To Mark The TestAs Failed
+    }
+
 });
 
+
+
 test('profile information can be updated', function () {
-    $user = User::factory()->create();
 
-    $this->actingAs($user);
+    try{
+        $user = User::factory()->create();
 
-    $component = Volt::test('profile.update-profile-information-form')
-        ->set('name', 'Test User')
-        ->set('email', 'test@example.com')
-        ->call('updateProfileInformation');
+        $this->actingAs($user);
 
-    $component
-        ->assertHasNoErrors()
-        ->assertNoRedirect();
+        $component = Volt::test('profile.update-profile-information-form')
+            ->set('name', 'Test User')
+            ->set('email', 'test@example.com')
+            ->call('updateProfileInformation');
 
-    $user->refresh();
+        $component
+            ->assertHasNoErrors()
+            ->assertNoRedirect();
 
-    $this->assertSame('Test User', $user->name);
-    $this->assertSame('test@example.com', $user->email);
-    $this->assertNull($user->email_verified_at);
+        $user->refresh();
+
+        $this->assertSame('Test User', $user->name);
+        $this->assertSame('test@example.com', $user->email);
+        $this->assertNull($user->email_verified_at);
+
+        Log::channel('test_result')->info('Test passed: profile information can be updated');
+
+    }catch(\Throwable $e) {
+        Log::channel('test_result')->error(
+            'Test failed: ' . $e->getMessage(),
+            ['exception' => $e] // <- This makes the stacktrace register
+        ); throw $e; //allows Phpunit To Mark The TestAs Failed
+    }
 });
 
 test('email verification status is unchanged when the email address is unchanged', function () {
-    $user = User::factory()->create();
 
-    $this->actingAs($user);
+    try{
+        $user = User::factory()->create();
 
-    $component = Volt::test('profile.update-profile-information-form')
-        ->set('name', 'Test User')
-        ->set('email', $user->email)
-        ->call('updateProfileInformation');
+        $this->actingAs($user);
 
-    $component
-        ->assertHasNoErrors()
-        ->assertNoRedirect();
+        $component = Volt::test('profile.update-profile-information-form')
+            ->set('name', 'Test User')
+            ->set('email', $user->email)
+            ->call('updateProfileInformation');
 
-    $this->assertNotNull($user->refresh()->email_verified_at);
+        $component
+            ->assertHasNoErrors()
+            ->assertNoRedirect();
+
+        $this->assertNotNull($user->refresh()->email_verified_at);
+
+        Log::channel('test_result')->info('Test passed: email verification status is unchanged when the email address is unchanged');
+
+
+    }catch(\Throwable $e) {
+        Log::channel('test_result')->error(
+            'Test failed: ' . $e->getMessage(),
+            ['exception' => $e] // <- This makes the stacktrace register
+        ); throw $e; //allows Phpunit To Mark The TestAs Failed
+    }
 });
 
 test('user can delete their account', function () {
-    $user = User::factory()->create();
 
-    $this->actingAs($user);
+    try{
+        $user = User::factory()->create();
 
-    $component = Volt::test('profile.delete-user-form')
-        ->set('password', 'password')
-        ->call('deleteUser');
+        $this->actingAs($user);
 
-    $component
-        ->assertHasNoErrors()
-        ->assertRedirect('/');
+        $component = Volt::test('profile.delete-user-form')
+            ->set('password', 'password')
+            ->call('deleteUser');
 
-    $this->assertGuest();
-    $this->assertNull($user->fresh());
+        $component
+            ->assertHasNoErrors()
+            ->assertRedirect('/');
+
+        $this->assertGuest();
+        $this->assertNull($user->fresh());
+
+        Log::channel('test_result')->info('Test passed: user can delete their account');
+
+
+    }catch(\Throwable $e) {
+        Log::channel('test_result')->error(
+            'Test failed: ' . $e->getMessage(),
+            ['exception' => $e] // <- This makes the stacktrace register
+        ); throw $e; //allows Phpunit To Mark The TestAs Failed
+    }
 });
 
 test('correct password must be provided to delete account', function () {
-    $user = User::factory()->create();
 
-    $this->actingAs($user);
+    try{
+        $user = User::factory()->create();
 
-    $component = Volt::test('profile.delete-user-form')
-        ->set('password', 'wrong-password')
-        ->call('deleteUser');
+        $this->actingAs($user);
 
-    $component
-        ->assertHasErrors('password')
-        ->assertNoRedirect();
+        $component = Volt::test('profile.delete-user-form')
+            ->set('password', 'wrong-password')
+            ->call('deleteUser');
 
-    $this->assertNotNull($user->fresh());
+        $component
+            ->assertHasErrors('password')
+            ->assertNoRedirect();
+
+        $this->assertNotNull($user->fresh());
+
+       Log::channel('test_result')->info('Test passed: correct password must be provided to delete account');
+
+    }catch(\Throwable $e) {
+        Log::channel('test_result')->error(
+            'Test failed: ' . $e->getMessage(),
+            ['exception' => $e] // <- This makes the stacktrace register
+        ); throw $e; //allows Phpunit To Mark The TestAs Failed
+    }
 });

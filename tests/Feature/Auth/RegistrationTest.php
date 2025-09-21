@@ -9,13 +9,13 @@ test('registration screen can be rendered', function () {
 
      try {
 
-    $response = $this->get('/register');
+        $response = $this->get('/register');
 
-    $response
-        ->assertOk()
-        ->assertSeeVolt('pages.auth.register');
+        $response
+            ->assertOk()
+            ->assertSeeVolt('pages.auth.register');
 
-    Log::channel('test_result')->info('Test passed: registration screen can be rendered');
+        Log::channel('test_result')->info('Test passed: registration screen can be rendered');
 
      }catch (\Throwable $e) {
         Log::channel('test_result')->error(

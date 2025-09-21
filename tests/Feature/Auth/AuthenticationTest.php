@@ -17,9 +17,7 @@ test('login screen can be rendered', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
-        );
-
-        throw $e; //allowsPhpunitToMarkTheTestAsFailed
+        ); throw $e; //allowsPhpunitToMarkTheTestAsFailed
     }
 });
 
@@ -43,9 +41,7 @@ test('users can authenticate using the login screen', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
-);
-
-        throw $e; // allows phpunit to mark the test as failed
+        ); throw $e; // allows phpunit to mark the test as failed
     }
 });
 
@@ -69,9 +65,7 @@ test('users can not authenticate with invalid password', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace
-);
-
-        throw $e; // allows phpunit to mark the test as failed
+        ); throw $e; // allows phpunit to mark the test as failed
     }
 });
 
@@ -91,9 +85,7 @@ test('navigation menu can be rendered', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
-);
-
-        throw $e; // allows phpunit to mark the test as failed
+        );throw $e; // allows phpunit to mark the test as failed
     }
 });
 
@@ -117,8 +109,6 @@ test('users can logout', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
-        );
-
-        throw $e; // allows phpunit to mark the test as failed
+        );throw $e; // allows phpunit to mark the test as failed
     }
 });

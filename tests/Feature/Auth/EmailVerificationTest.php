@@ -23,9 +23,7 @@ test('email verification screen can be rendered', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
-        );
-
-        throw $e; // allows phpunit to mark the test as failed
+        ); throw $e; // allows phpunit to mark the test as failed
     }
 
 
@@ -60,9 +58,7 @@ test('email can be verified', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
-        );
-
-        throw $e; // allows phpunit to mark the test as failed
+        ); throw $e; // allows phpunit to mark the test as failed
     }
 
 
@@ -89,9 +85,7 @@ test('email is not verified with invalid hash', function () {
         Log::channel('test_result')->error(
             'Test failed: ' . $e->getMessage(),
             ['exception' => $e] // <- This makes the stacktrace register
-        );
-
-        throw $e; // allows phpunit to mark the test as failed
+        ); throw $e; // allows phpunit to mark the test as failed
     }
 
 
