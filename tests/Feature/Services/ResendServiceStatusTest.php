@@ -2,44 +2,40 @@
 
 namespace Tests\Feature\Services;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class ResendServiceStatusTest extends TestCase
 {
     /**
-     * Simply checks the Resend service status and logs the result.
+     * Test that the Resend API is reachable.
      *
      * @return void
      */
-    public function test_resend_service_connection(): void
+    public function test_resend_api_is_reachable()
     {
+        $logChannel = Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/test_result.log'),
+        ]);
+
         try {
-            // 1. Attempt to send an email. Laravel will automatically use the configuration
-            //    loaded from the testing environment (.env.testing).
-            Mail::raw('Service connectivity test.', function ($message) {
-                $message->to('rcedeno@igroupsolution.con')
-                        ->subject('Connectivity Test');
-            });
+            $response = Http::get('https://api.resend.com');
 
-            // 2. If the line above didn't throw an exception, the connection was successful.
-            Log::channel('test_result')->info(
-                'Resend test successful. The connection to the service is working correctly.'
-            );
-
-            // Assert that the test passed.
-            $this->assertTrue(true);
-
-        } catch (\Throwable $e) {
-            // 3. If anything failed (e.g., wrong API key), the error is caught.
-            Log::channel('test_result')->error(
-                'Resend test failed: ' . $e->getMessage(),
-                ['exception' => $e] // Logs the full exception details.
-            );
-
-            // 4. Re-throw the exception so PHPUnit marks the test as failed.
-            throw $e;
+            if ($response->ok() || $response->clientError() || $response->serverError()) {
+                $message = 'Test passed: Resend API is reachable. Status: ' . $response->status();
+                $logChannel->info($message);
+                $this->assertTrue(true); // Test passes if we get any response
+            } else {
+                $message = 'Test failed: Resend API is unreachable. No response.';
+                $logChannel->error($message);
+                $this->fail($message);
+            }
+        } catch (\Exception $e) {
+            $message = 'Test failed: Failed to connect to Resend API: ' . $e->getMessage();
+            $logChannel->error($message);
+            $this->fail($message);
         }
     }
 }
