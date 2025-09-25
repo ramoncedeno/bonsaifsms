@@ -11,8 +11,11 @@ class ViewAccessibilityTest extends TestCase
 {
     use DatabaseMigrations;
 
+
+    //declares the property in which the test user object will be stored
     protected User $testUser;
 
+    // Method defined to ejcute before each test
     protected function setUp(): void
     {
         parent::setUp();
