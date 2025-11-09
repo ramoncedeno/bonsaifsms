@@ -133,6 +133,12 @@ return [
             'level' => 'debug',
         ],
 
+        'healthcheck_result' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/healthcheck_result.log'),
+            'level' => 'debug',
+        ],
+
 
 
 
