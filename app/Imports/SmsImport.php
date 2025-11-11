@@ -17,13 +17,15 @@ class SmsImport implements OnEachRow, WithHeadingRow
 
 {
     protected $smsController;
+    public $userId; // Changed from protected to public
 
     /**
      * Constructor to inject dependencies using the container.
      */
-    public function __construct()
+    public function __construct(int $userId) // Modified to accept userId
     {
         $this->smsController = app(SmsTransactionController::class); // Use Laravel's app container
+        $this->userId = $userId; // Store the userId
     }
 
     /**
@@ -44,7 +46,7 @@ class SmsImport implements OnEachRow, WithHeadingRow
 
          // Create a temporary record first
          $sendAttempt = SendAttempt::create([
-
+             'user_id' => $this->userId, // Added user_id
              'subject' => $subject,
              'sponsor' => $sponsor,
              'identification_id'=>$identification_id,

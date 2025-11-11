@@ -216,7 +216,7 @@ class HealthCheckController extends Controller
 
         Auth::login($testUser);
 
-        $routes = ['/dashboard', '/profile', '/sms/view', '/users'];
+        $routes = ['/dashboard', '/profile', '/sms/view', '/users', '/sms-consumption'];
         $results = [];
         $allOk = true;
 
@@ -256,6 +256,7 @@ class HealthCheckController extends Controller
             'SmsImportController.php',
             'SmsTransactionController.php',
             'UserController.php',
+            'SmsSenderController.php',
         ];
 
         $missing = collect($controllers)
@@ -279,6 +280,7 @@ class HealthCheckController extends Controller
     {
         $components = [
             'SmsAttemptView.php',
+            'SmsConsumptionDashboard.php',
             'SmsSummary.php',
             'UserManagement.php',
             'Actions/Logout.php',
@@ -295,6 +297,8 @@ class HealthCheckController extends Controller
         }
         return ['status' => 'OK', 'message' => 'All key Livewire components are present.'];
     }
+
+
 
     /**
      * Checks for the presence of key import files.

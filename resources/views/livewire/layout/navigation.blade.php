@@ -37,6 +37,9 @@ new class extends Component
                         <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
                             {{ __('User Management') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('sms.consumption')" :active="request()->routeIs('sms.consumption')" wire:navigate>
+                            {{ __('SMS Consumption') }}
+                        </x-nav-link>
                     @endcan
                     @can('import sms')
                         <x-nav-link :href="route('sms.reg.view')" :active="request()->routeIs('sms.reg.view')" wire:navigate>
@@ -97,6 +100,9 @@ new class extends Component
             @can('manage users')
                 <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
                     {{ __('User Management') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('sms.consumption')" :active="request()->routeIs('sms.consumption')" wire:navigate>
+                    {{ __('SMS Consumption') }}
                 </x-responsive-nav-link>
             @endcan
             @if (auth()->user()->can('import sms') || auth()->user()->hasRole('supervisor'))

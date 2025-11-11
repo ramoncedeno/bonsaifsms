@@ -71,14 +71,20 @@ class UserManagement extends Component
             'password' => 'required_if:user_id,null',
         ]);
 
+        $isNewUser = empty($this->user_id);
+
         $userData = [
             'name' => $this->name,
             'email' => $this->email,
         ];
 
+        if ($isNewUser) {
+            $userData['sms_limit'] = 50;
+        }
+
         if (!empty($this->password)) {
             $userData['password'] = bcrypt($this->password);
-        } else if (empty($this->user_id)) { // Only set a default password for new users if not provided
+        } else if ($isNewUser) { // Only set a default password for new users if not provided
             $userData['password'] = bcrypt('password'); // Default password
         }
 

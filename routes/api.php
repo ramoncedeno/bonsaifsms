@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SmsImportController;
+use App\Http\Controllers\SmsSenderController;
 use App\Http\Controllers\SmsTransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -19,4 +20,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/send-sms/{phone}/{message}', [SmsTransactionController::class, 'sendSMS'])->name('sms.send'); // Test Controller
-
+Route::middleware('auth:sanctum')->post('/app/send-sms/{phone}/{message}', [SmsSenderController::class, 'sendSMS'])->name('app.sms.send'); // Test Controller

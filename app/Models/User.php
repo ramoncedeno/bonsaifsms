@@ -25,7 +25,14 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
         'email',
         'password',
         'status',
+        'sms_limit',
+        'sms_balance',
     ];
+
+    public function sendAttempts()
+    {
+        return $this->hasMany(SendAttempt::class);
+    }
 
     public const STATUS_ACTIVE = 'active';
     public const STATUS_SUSPENDED = 'suspended';

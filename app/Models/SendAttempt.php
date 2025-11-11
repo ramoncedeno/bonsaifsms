@@ -9,7 +9,7 @@ class SendAttempt extends Model
     protected $table = 'send_attempts';
 
     protected $fillable = [
-
+        'user_id',
         'subject',
         'sponsor',
         'identification_id',
@@ -20,5 +20,10 @@ class SendAttempt extends Model
         'aditional_data',
         'created_at'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

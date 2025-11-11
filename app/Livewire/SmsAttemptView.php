@@ -31,7 +31,7 @@ class SmsAttemptView extends Component
         ]);
 
         try {
-            Excel::import(new SmsImport, $this->file);
+            Excel::import(new SmsImport(auth()->id()), $this->file);
             $this->message = 'Importación de SMS completada con éxito.';
             $this->file = null;
             $this->resetPage(); // Reset pagination to show new data
@@ -47,15 +47,20 @@ class SmsAttemptView extends Component
         $query = SendAttempt::query();
 
         if (!empty($this->search)) {
-            $search = $this->search;
-            $query->where(function($q) use ($search) {
-                $q->where('subject', 'LIKE', "%{$search}%")
-                  ->orWhere('sponsor', 'LIKE', "%{$search}%")
-                  ->orWhere('identification_id', 'LIKE', "%{$search}%")
-                  ->orWhere('phone', 'LIKE', "%{$search}%")
-                  ->orWhere('message', 'LIKE', "%{$search}%")
-                  ->orWhere('status', 'LIKE', "%{$search}%")
-                  ->orWhere('response_id', 'LIKE', "%{$search}%");
+            $searchableFields = [
+                'subject',
+                'sponsor',
+                'identification_id',
+                'phone',
+                'message',
+                'status',
+                'response_id',
+            ];
+
+            $query->where(function($q) use ($searchableFields) {
+                foreach ($searchableFields as $field) {
+                    $q->orWhere($field, 'LIKE', "%{$this->search}%");
+                }
             });
         }
 
