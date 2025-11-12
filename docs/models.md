@@ -15,4 +15,6 @@
 ### `SendAttempt` Model
 - **Purpose**: Records details of each SMS send attempt, particularly for bulk imports.
 - **Table**: `send_attempts`
-- **Fillable Fields**: `subject`, `sponsor`, `identification_id`, `phone`, `message`, `status`, `response_id`, `aditional_data`, `created_at`
+- **Fillable Fields**: `user_id`, `subject`, `sponsor`, `identification_id`, `phone`, `message`, `status`, `response_id`, `aditional_data`, `created_at`
+- **Relationships**:
+    - `user()`: Belongs to a `User` model.

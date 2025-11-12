@@ -11,9 +11,14 @@
     - `send(Request $request)`: Handles the logic for sending an SMS message based on request data.
 
 ### `HealthCheckController`
-- **Purpose**: Provides an endpoint to check the operational status and health of the application.
+- **Purpose**: Provides an API endpoint (`/healthcheck`) to perform a series of comprehensive health checks on various application services (database, cache, filesystem, environment, app key, routes, controllers, Livewire components, Excel library, permissions package, mail service, Bonsaif API, Resend API). It returns a JSON response with the status of each check, indicating the overall health of the application.
 - **Key Methods**:
-    - `__invoke()`: Returns a simple status response, indicating the application is running.
+    - `checkAccessibleRoutes()`: Performs checks on various application routes and services.
+
+### `SmsImportController`
+- **Purpose**: Handles the web interface for SMS import operations. While the core import logic resides in `App\Imports\SmsImport`, this controller manages the view and initial request handling for file uploads.
+- **Key Methods**:
+    - `showImportForm()`: Displays the view where users can upload Excel/CSV files for SMS import.
 
 ### `DashboardController`
 - **Purpose**: Manages the display of the application's main dashboard, often showing summary information or key metrics.
