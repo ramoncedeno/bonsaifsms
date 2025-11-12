@@ -12,7 +12,6 @@ sequenceDiagram
 
     User->>Browser: Navigates to /send-sms
     Browser->>send_sms.blade.php: Renders SMS sending form
-    User->>send_sms.blade.php: Enters phone & message, clicks "Send SMS"
     send_sms.blade.php->>SmsTransactionController: POST /sms/send/{phone}/{message} (via JS)
     SmsTransactionController->>SmsTransactionController: Validates phone & message
     alt Validation Fails
