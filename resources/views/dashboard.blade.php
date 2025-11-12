@@ -12,10 +12,14 @@
                     {{ __("You're logged in!") }}
                 </div>
 
-                <x-test-summary :successPercentage="$successPercentage" :successCount="$successCount" :failureCount="$failureCount" />
+                {{-- User SMS Consumption Component --}}
+                <livewire:user-sms-consumption />
 
                 {{-- SMS Summary Component --}}
                 <livewire:sms-summary />
+
+                {{-- Health Check Summary Component --}}
+                <livewire:health-check-summary />
             </div>
         </div>
     </div>

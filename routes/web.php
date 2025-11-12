@@ -5,7 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthCheckController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/health-check', [HealthCheckController::class, 'check'])->name('health-check');
+Route::get('/health-check', [HealthCheckController::class, 'check'])->name('healthcheck.check');
 
 Route::redirect('/', '/login');
 

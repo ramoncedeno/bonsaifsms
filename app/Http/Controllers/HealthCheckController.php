@@ -231,7 +231,7 @@ class HealthCheckController extends Controller
             }
         }
 
-        Auth::logout();
+        // Auth::logout(); // Removed to prevent logging out the current user
 
         if (!$allOk) {
             throw new Exception(json_encode($results));

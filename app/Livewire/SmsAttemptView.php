@@ -9,6 +9,7 @@ use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\SmsImport;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth; // Added Auth facade
 
 class SmsAttemptView extends Component
 {
@@ -18,8 +19,17 @@ class SmsAttemptView extends Component
     public $search = '';
     public $file;
     public $message = '';
+    public $filterOption = 'mine'; // New property for filtering: 'mine' or 'all'
+
+    // Removed $isImporting property
+    // Removed protected $listeners = ['importFinished' => 'handleImportFinished'];
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterOption()
     {
         $this->resetPage();
     }
@@ -32,19 +42,23 @@ class SmsAttemptView extends Component
 
         try {
             Excel::import(new SmsImport(auth()->id()), $this->file);
-            $this->message = 'Importación de SMS completada con éxito.';
             $this->file = null;
-            $this->resetPage(); // Reset pagination to show new data
-            $this->dispatch('smsImported'); // <--- AÑADIDO: Forzar la re-renderización del componente
+            session()->flash('message', 'Importación de SMS iniciada. La página se recargará en breve.');
+            $this->redirect(request()->header('Referer'), navigate: true); // Full page reload
         } catch (\Exception $e) {
             Log::error('Error durante la importación de SMS: ' . $e->getMessage());
-            $this->message = 'Error durante la importación de SMS: ' . $e->getMessage();
+            session()->flash('message', 'Error durante la importación de SMS: ' . $e->getMessage());
         }
     }
+
+    // Removed handleImportFinished method
 
     public function render()
     {
         $query = SendAttempt::query();
+
+        // Add user_id to the selected columns, even if not displayed
+        $query->select('id', 'user_id', 'subject', 'sponsor', 'identification_id', 'phone', 'message', 'status', 'response_id', 'created_at');
 
         if (!empty($this->search)) {
             $searchableFields = [
@@ -62,6 +76,11 @@ class SmsAttemptView extends Component
                     $q->orWhere($field, 'LIKE', "%{$this->search}%");
                 }
             });
+        }
+
+        // Apply filter based on filterOption
+        if ($this->filterOption === 'mine' && Auth::check()) {
+            $query->where('user_id', Auth::id());
         }
 
         $sendAttempts = $query->orderBy('created_at', 'desc')->paginate(10);

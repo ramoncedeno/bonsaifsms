@@ -10,11 +10,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithEvents; // Added WithEvents
+use Maatwebsite\Excel\Events\AfterImport; // Added AfterImport event
 use Maatwebsite\Excel\Row;
+use Livewire\Features\SupportEvents\Dispatch; // Added Livewire Dispatch
 
-class SmsImport implements OnEachRow, WithHeadingRow
-,WithChunkReading,WithBatchInserts,ShouldQueue
-
+class SmsImport implements OnEachRow, WithHeadingRow, WithChunkReading, WithBatchInserts, ShouldQueue, WithEvents // Added WithEvents
 {
     protected $smsController;
     public $userId; // Changed from protected to public
@@ -124,7 +125,19 @@ class SmsImport implements OnEachRow, WithHeadingRow
         return 6000;
     }
 
-
-
-
+    /**
+     * Register events for the import process.
+     *
+     * @return array
+     */
+    public function registerEvents(): array
+    {
+        return [
+            AfterImport::class => function (AfterImport $event) {
+                // Dispatch Livewire event after the entire import is finished
+                Dispatch::browser('importFinished', ['message' => 'Importación de SMS completada con éxito.']);
+                Log::info('SMS Import finished and Livewire event dispatched with message.');
+            },
+        ];
+    }
 }
