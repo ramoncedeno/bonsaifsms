@@ -196,6 +196,9 @@ if (Auth::user()->can('send sms')) {
     // User can send SMS
 }
 ```
+## User manual
+
+[**Models**](./docs/user_manual.md): In this section we share a brief guide to updating the application.
 
 ## Application Documentation
 
@@ -216,6 +219,9 @@ For detailed information about the application's architecture, please refer to t
         -   Allows importing new SMS records via an Excel/CSV file.
 -   [**Data Flow Diagrams**](./docs/data_flow_diagrams.md): Visual representations of key processes.
     -   **SmsConsumptionDashboard (Livewire Component)**: Displays SMS consumption data for all users, including current SMS limit, remaining SMS, and SMS sent. It also provides functionality to add SMS balance to a user.
+
+
+
 
 
 
