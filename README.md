@@ -12,6 +12,7 @@ A web application for managing and sending SMS messages, including features for 
     - [Models](#models)
     - [Controllers](#controllers)
 - [Data Flow Diagrams](#data-flow-diagrams)
+- [User manual](#user-manual)
 
 ## Requirements
 - Laravel v11.3.3
@@ -198,7 +199,7 @@ if (Auth::user()->can('send sms')) {
 ```
 ## User manual
 
-[**Models**](./docs/user_manual.md): In this section we share a brief guide to updating the application.
+[**User Manual**](./docs/user_manual.md): In this section, we add a brief guide on how to use the application.
 
 ## Application Documentation
 
@@ -217,10 +218,10 @@ For detailed information about the application's architecture, please refer to t
         -   Includes filtering options (e.g., "My Records", "All Records").
         -   Features a modern, styled table for better readability.
         -   Allows importing new SMS records via an Excel/CSV file.
+        **SmsConsumptionDashboard (Livewire Component)**: Displays SMS consumption data for all users, including current SMS limit, remaining SMS, and SMS sent. It also provides functionality to add SMS balance to a user.
+
+## Data Flow Diagrams
 -   [**Data Flow Diagrams**](./docs/data_flow_diagrams.md): Visual representations of key processes.
-    -   **SmsConsumptionDashboard (Livewire Component)**: Displays SMS consumption data for all users, including current SMS limit, remaining SMS, and SMS sent. It also provides functionality to add SMS balance to a user.
-
-
 
 
 
