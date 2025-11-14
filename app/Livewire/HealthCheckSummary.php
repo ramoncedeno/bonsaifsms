@@ -13,22 +13,33 @@ class HealthCheckSummary extends Component
     public $statusCounts = [];
     public $totalChecks = 0;
     public $lastCheckTime = null;
-    public $appLifePercentage = 0; // New property
+    public $appLifePercentage = 0;
+    public $ready = false;
+    public $detailedChecks = []; // New property for individual checks
 
     public function mount()
+    {
+        $this->statusCounts = [];
+        $this->totalChecks = 0;
+        $this->lastCheckTime = 'N/A';
+        $this->appLifePercentage = 0;
+        $this->detailedChecks = [];
+    }
+
+    public function loadHealthChecks()
     {
         // Trigger the health check when the component mounts
         try {
             Http::get(route('healthcheck.check'));
         } catch (\Exception $e) {
             Log::error("Failed to trigger health check on mount: " . $e->getMessage());
-            // Optionally, emit a browser event to show an error message
             $this->dispatch('notify', ['message' => 'Failed to run health check automatically.', 'type' => 'error']);
         }
 
         $logFilePath = storage_path('logs/healthcheck_result.log');
         $statusTallies = [];
         $latestTimestamp = null;
+        $lastLogData = null;
 
         if (File::exists($logFilePath)) {
             $logContent = File::get($logFilePath);
@@ -40,8 +51,6 @@ class HealthCheckSummary extends Component
                     continue;
                 }
 
-                // Extract JSON part from the log line
-                // The JSON part starts after "Health check performed. "
                 $jsonString = substr($line, strpos($line, '{'));
 
                 if ($jsonString) {
@@ -53,11 +62,11 @@ class HealthCheckSummary extends Component
                             $statusTallies[$status] = ($statusTallies[$status] ?? 0) + 1;
                             $this->totalChecks++;
 
-                            // Update latest check time
                             if (isset($data['response']['timestamp'])) {
                                 $currentTimestamp = Carbon::parse($data['response']['timestamp']);
                                 if ($latestTimestamp === null || $currentTimestamp->greaterThan($latestTimestamp)) {
                                     $latestTimestamp = $currentTimestamp;
+                                    $lastLogData = $data; // Store the most recent log data
                                 }
                             }
                         }
@@ -71,13 +80,18 @@ class HealthCheckSummary extends Component
         $this->statusCounts = $statusTallies;
         $this->lastCheckTime = $latestTimestamp ? $latestTimestamp->format('Y-m-d') : 'N/A';
 
-        // Calculate App Life Percentage
+        if ($lastLogData && isset($lastLogData['response']['checks'])) {
+            $this->detailedChecks = $lastLogData['response']['checks'];
+        }
+
         $successfulChecks = $this->statusCounts['OK'] ?? 0;
         if ($this->totalChecks > 0) {
             $this->appLifePercentage = round(($successfulChecks / $this->totalChecks) * 100, 2);
         } else {
             $this->appLifePercentage = 0;
         }
+
+        $this->ready = true;
     }
 
     public function render()

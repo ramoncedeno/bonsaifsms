@@ -43,11 +43,11 @@ class SmsAttemptView extends Component
         try {
             Excel::import(new SmsImport(auth()->id()), $this->file);
             $this->file = null;
-            session()->flash('message', 'Importación de SMS iniciada. La página se recargará en breve.');
+            session()->flash('message', 'SMS import started. The process will run in the background.');
             $this->redirect(request()->header('Referer'), navigate: true); // Full page reload
         } catch (\Exception $e) {
-            Log::error('Error durante la importación de SMS: ' . $e->getMessage());
-            session()->flash('message', 'Error durante la importación de SMS: ' . $e->getMessage());
+            Log::error('Error during SMS import: ' . $e->getMessage());
+            session()->flash('message', 'Error during SMS import: ' . $e->getMessage());
         }
     }
 
