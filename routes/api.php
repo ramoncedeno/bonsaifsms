@@ -13,11 +13,6 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-
-    Route::get('/import-sms', [SmsImportController::class, 'showImportForm'])->name('sms.import.form');
-    Route::post('/import-sms', [SmsImportController::class, 'import'])->name('sms.import');
-
 });
 
-Route::post('/send-sms/{phone}/{message}', [SmsTransactionController::class, 'sendSMS'])->name('sms.send'); // Test Controller
 Route::middleware('auth:sanctum')->post('/app/send-sms/{phone}/{message}', [SmsSenderController::class, 'sendSMS'])->name('app.sms.send'); // Test Controller

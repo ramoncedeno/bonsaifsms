@@ -253,10 +253,8 @@ class HealthCheckController extends Controller
     {
         $controllers = [
             'DashboardController.php',
-            'SmsImportController.php',
             'SmsTransactionController.php',
-            'UserController.php',
-            'SmsSenderController.php',
+            'SmsSenderController.php'
         ];
 
         $missing = collect($controllers)
@@ -309,8 +307,7 @@ class HealthCheckController extends Controller
     private function checkImports(): array
     {
         $imports = [
-            'SmsImport.php',
-            'UsersImport.php',
+            'SmsImport.php'
         ];
 
         $missing = collect($imports)

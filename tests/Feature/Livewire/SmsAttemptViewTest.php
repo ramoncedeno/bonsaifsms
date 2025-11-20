@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class SmsAttemptViewTest extends TestCase
 {
-    use DatabaseMigrations; // ✅ En lugar de RefreshDatabase
+    use DatabaseMigrations; // ✅ Instead of RefreshDatabase
 
     protected User $testUser;
 
@@ -21,9 +21,9 @@ class SmsAttemptViewTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(); // ✅ Ejecuta seeders para tener datos de prueba
+        $this->seed(); // ✅ Run seeders to have test data
 
-        $this->testUser = User::find(1); // ✅ Usuario real del seeder
+        $this->testUser = User::find(1); // ✅ Real seeder user
     }
 
     /**
@@ -32,7 +32,7 @@ class SmsAttemptViewTest extends TestCase
     public function test_authenticated_user_can_import_sms_via_livewire(): void
     {
         try {
-            $this->actingAs($this->testUser); // ✅ Usuario real
+            $this->actingAs($this->testUser); // ✅ Real user
             Queue::fake();
 
             $file = UploadedFile::fake()->createWithContent(
