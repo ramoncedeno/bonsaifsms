@@ -216,7 +216,7 @@ class HealthCheckController extends Controller
 
         Auth::login($testUser);
 
-        $routes = ['/dashboard', '/profile', '/sms/view', '/users', '/sms-consumption'];
+        $routes = ['/dashboard', '/profile', '/sms/view', '/users', '/sms-consumption', '/test-app'];
         $results = [];
         $allOk = true;
 
@@ -283,6 +283,7 @@ class HealthCheckController extends Controller
             'UserManagement.php',
             'Actions/Logout.php',
             'Forms/LoginForm.php',
+            'HealthCheckSummary.php',
         ];
 
         $missing = collect($components)

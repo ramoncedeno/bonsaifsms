@@ -2,10 +2,13 @@
     <!-- Search and Filter Controls -->
     <div class="mb-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0 md:space-x-4">
         <input type="text" wire:model.live="search" placeholder="Buscar..." class="w-full md:w-1/3 p-2 border border-gray-300 dark:border-gray-700 rounded text-gray-900 dark:bg-gray-700 dark:text-gray-100">
-        <select wire:model.live="filterOption" class="w-full md:w-auto p-2 border border-gray-300 dark:border-gray-700 rounded text-gray-900 dark:bg-gray-700 dark:text-gray-100">
-            <option value="mine">{{ __('My Records') }}</option>
-            <option value="all">{{ __('All Records') }}</option>
-        </select>
+        <div class="flex items-center space-x-4">
+            <input type="date" wire:model.live="filterDate" class="w-full md:w-auto p-2 border border-gray-300 dark:border-gray-700 rounded text-gray-900 dark:bg-gray-700 dark:text-gray-100">
+            <select wire:model.live="filterOption" class="w-full md:w-auto p-2 border border-gray-300 dark:border-gray-700 rounded text-gray-900 dark:bg-gray-700 dark:text-gray-100">
+                <option value="mine">{{ __('My Records') }}</option>
+                <option value="all">{{ __('All Records') }}</option>
+            </select>
+        </div>
     </div>
 
     <!-- Top Pagination Bar -->

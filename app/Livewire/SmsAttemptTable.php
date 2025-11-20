@@ -13,6 +13,8 @@ class SmsAttemptTable extends Component
 
     public $search = '';
     public $filterOption = 'mine'; // 'mine' or 'all'
+    // feat: Add date filter property
+    public $filterDate = '';
 
     public function updatingSearch()
     {
@@ -20,6 +22,12 @@ class SmsAttemptTable extends Component
     }
 
     public function updatingFilterOption()
+    {
+        $this->resetPage();
+    }
+
+    // feat: Reset page on date filter change
+    public function updatingFilterDate()
     {
         $this->resetPage();
     }
@@ -50,6 +58,11 @@ class SmsAttemptTable extends Component
 
         if ($this->filterOption === 'mine' && Auth::check()) {
             $query->where('user_id', Auth::id());
+        }
+
+        // feat: Apply date filter to query
+        if (!empty($this->filterDate)) {
+            $query->whereDate('created_at', $this->filterDate);
         }
 
         $sendAttempts = $query->orderBy('created_at', 'desc')->paginate(10);

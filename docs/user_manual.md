@@ -12,38 +12,41 @@ To begin using the system, navigate to the login page and provide your credentia
 
 - **Access URL:** `[Application URL]/login`
 
+![alt text](image-5.png)
+
 Once authenticated, you will be redirected to the main Dashboard.
 
 ## 3. Dashboard
 
 The Dashboard is the main screen after logging in and offers a quick overview of the most important information. It consists of several widgets:
 
-- **System Health Summary:** Displays the status of critical application services (Database, Cache, external API, etc.). An "OK" status for all services indicates that the application is functioning correctly.
-- **User SMS Consumption:** Presents your personal SMS usage statistics, including total available, sent, and remaining balance.
 - **Dispatch Summary:** Provides a count of all SMS dispatch attempts, grouped by their status (Successful, Failed, Pending, etc.).
 
-![alt text](image.png)
+![alt text](image-6.png)
 
-## 4. SMS Management
+## 4. SMS Consumption Dashboard
 
-This section, accessible from the navigation menu, is the core for SMS dispatch operations. It requires the `import sms` permission.
+This section manages user usage in order to keep track of the number of SMS messages sent, remaining balances, and additional fees.
 
-- **URL:** `/sms/view`
+![alt text](image-7.png)
 
 ### 4.1. Viewing Dispatches
 
 The main page of this section displays a table with the history of all SMS dispatch attempts.
 
 - **Filters:** You can toggle between "My Records" to see only SMS sent by you, and "All Records" to see those from all users (if you have permissions).
-- **Table Columns:** The table includes details such as the recipient (`phone`), the message, the dispatch status (`status`), and the response from the SMS provider (`response_id`).
 
-![alt text](image-1.png)
+- **Table Columns:**  The table includes details such as the recipient (phone), the message, the dispatch status (status), and the response from the SMS provider (response_id).
 
-### 4.2. Batch SMS Import
+![alt text](image-8.png)
 
-This functionality allows you to send thousands of SMS by uploading a single file.
+### 4.2. SMS Import file
 
-![alt text](image-2.png)
+This functionality allows you to send thousands of SMS by uploading a single file an Displays statistical data on SMS usage per user, monitor consumption and overall activity.
+
+- **SMS Consumption:** Presents your personal SMS usage statistics, including total available, sent, and remaining balance.
+
+![alt text](image-9.png)
 
 
 **Steps for import:**
@@ -75,13 +78,10 @@ Allows managing user accounts within the system.
     - Edit existing user information and permissions.
     - Activate/Deactivate or delete users.
     
-    ![alt text](image-3.png)
+![alt text](image-3.png)
 
-### 5.2. Global SMS Consumption Dashboard
+### 5.1. Health Check-app
 
-Provides a global view of SMS consumption across the entire platform.
+System Health Summary: Displays the status of critical application services (Database, Cache, external API, etc.). An "OK" status for all services indicates that the application is functioning correctly.
 
-- **URL:** `/sms-consumption`
-- **Features:** Displays statistical data on SMS usage per user, allowing administrators to monitor consumption and overall activity.
-
-![alt text](image-4.png)
+![alt text](image-10.png)
