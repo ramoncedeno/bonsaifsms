@@ -43,9 +43,16 @@ new class extends Component
                     @endcan
                     @can('import sms')
                         <x-nav-link :href="route('sms.reg.view')" :active="request()->routeIs('sms.reg.view')" wire:navigate>
-                            {{ __('SMS Attempt Records') }}
+                            {{ __('SMS Import file') }}
                         </x-nav-link>
                     @endcan
+
+                    @hasrole('admin')
+                        <x-nav-link :href="route('test.app')" :active="request()->routeIs('test.app')" wire:navigate>
+                            {{ __('Test App') }}
+                        </x-nav-link>
+                    @endhasrole
+
                 </div>
             </div>
 

@@ -12,14 +12,13 @@
                     {{ __("You're logged in!") }}
                 </div>
 
-                {{-- User SMS Consumption Component --}}
-                <livewire:user-sms-consumption />
-
                 {{-- SMS Summary Component --}}
                 <livewire:sms-summary />
 
-                {{-- Health Check Summary Component --}}
-                <livewire:health-check-summary />
+                {{-- SMS Attempt Table Component --}}
+                 <livewire:sms-attempt-table />
+
+
             </div>
         </div>
     </div>

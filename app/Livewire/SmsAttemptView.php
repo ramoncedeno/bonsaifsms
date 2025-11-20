@@ -13,80 +13,8 @@ use Illuminate\Support\Facades\Auth; // Added Auth facade
 
 class SmsAttemptView extends Component
 {
-    use WithPagination;
-    use WithFileUploads;
-
-    public $search = '';
-    public $file;
-    public $message = '';
-    public $filterOption = 'mine'; // New property for filtering: 'mine' or 'all'
-
-    // Removed $isImporting property
-    // Removed protected $listeners = ['importFinished' => 'handleImportFinished'];
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingFilterOption()
-    {
-        $this->resetPage();
-    }
-
-    public function importSms()
-    {
-        $this->validate([
-            'file' => 'required|file|mimes:xlsx,csv',
-        ]);
-
-        try {
-            Excel::import(new SmsImport(auth()->id()), $this->file);
-            $this->file = null;
-            session()->flash('message', 'SMS import started. The process will run in the background.');
-            $this->redirect(request()->header('Referer'), navigate: true); // Full page reload
-        } catch (\Exception $e) {
-            Log::error('Error during SMS import: ' . $e->getMessage());
-            session()->flash('message', 'Error during SMS import: ' . $e->getMessage());
-        }
-    }
-
-    // Removed handleImportFinished method
-
     public function render()
     {
-        $query = SendAttempt::query();
-
-        // Add user_id to the selected columns, even if not displayed
-        $query->select('id', 'user_id', 'subject', 'sponsor', 'identification_id', 'phone', 'message', 'status', 'response_id', 'created_at');
-
-        if (!empty($this->search)) {
-            $searchableFields = [
-                'subject',
-                'sponsor',
-                'identification_id',
-                'phone',
-                'message',
-                'status',
-                'response_id',
-            ];
-
-            $query->where(function($q) use ($searchableFields) {
-                foreach ($searchableFields as $field) {
-                    $q->orWhere($field, 'LIKE', "%{$this->search}%");
-                }
-            });
-        }
-
-        // Apply filter based on filterOption
-        if ($this->filterOption === 'mine' && Auth::check()) {
-            $query->where('user_id', Auth::id());
-        }
-
-        $sendAttempts = $query->orderBy('created_at', 'desc')->paginate(10);
-
-        return view('livewire.sms-attempt-view', [
-            'sendAttempts' => $sendAttempts,
-        ])->layout('layouts.app');
+        return view('livewire.sms-attempt-view')->layout('layouts.app');
     }
 }

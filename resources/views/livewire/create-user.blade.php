@@ -25,7 +25,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="exampleFormControlInput4" class="block text-gray-700 text-sm font-bold mb-2">Roles:</label>
-                            <select multiple wire:model="selectedRoles" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @if($user_id == 1) disabled @endif wire:ignore>
+                            <select wire:model="selectedRoles" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @if($user_id == 1) disabled @endif wire:ignore>
                                 @foreach($roles as $role)
                                     <option value="{{ $role->name }}">{{ $role->name }}</option>
                                 @endforeach

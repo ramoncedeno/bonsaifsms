@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users', App\Livewire\UserManagement::class)->name('users.index');
     Route::get('/sms-consumption', App\Livewire\SmsConsumptionDashboard::class)->name('sms.consumption');
+    Route::view('test-app', 'livewire.layout.test-app')->name('test.app');
 });
 
 require __DIR__.'/auth.php';
